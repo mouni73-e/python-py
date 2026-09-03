@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Expense Tracker</h1>
+        <div>
+            <div>
+                <h3>Income</h3>7777777777
+                <p>
+                    ₹<span id="totalIncome">0</span>
+                </p>
+            </div>
+            <div>
+                <h3>Expenses</h3>
+                <p>
+                    ₹<span id="totalExpenses">0</span>
+                </p>
+            </div>
+            <div>
+                <h3>Balance</h3>
+                <p>
+                    ₹<span id="totalBalance">0</span>
+                </p>
+            </div>
+        
+        </div>
+        <p id="message"></p>
+
+    </div>
+    <form id="form">
+        <input type="text" id="name" placeholder="Enter your name">
+        <br><br>
+
+        <input type="number" id="amount" placeholder="Enter amount">
+        <br><br>
+
+        <select id="transactionType"> 
+        <option value="income">Income</option> 
+        <option value="expense">Expense</option> 
+    </select>
+    <br><br>
+
+        <select id="transactionCategory"> 
+            <option value="Salary">salary</option> 
+            <option value="Groceries">Groceries</option>
+            <option value="Utilities">Utilities</option> 
+        </select> <br><br>
+
+        <button type="submit">Add Transaction</button>
+
+
+    </form>
+    <div>
+        <h2>Transactions</h2>
+        <div id="list"></div>
+    </div>
+    
+    <script src="script.js"></script>
+    
+</body>
+</html>
