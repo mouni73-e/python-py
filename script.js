@@ -1,98 +1,101 @@
-/*
-let course = ["pfsd","jfsd","mern",1,true,false];
+const a=document.getElementById('totalIncome');
+const b=document.getElementById('totalExpenses');
+const c=document.getElementById('totalBalance');
+const d=document.getElementById('message');
+const e=document.getElementById('form');
+const f=document.getElementById('name');
+const g=document.getElementById('amount');
+const h=document.getElementById('transactionType');
+const i=document.getElementById('transactionCategory');
+const j=document.getElementById('list');
 
-console.log(course);
-console.log(typeof(course));
-console.log(course[0]);
-console.log(course[1]);
-console.log(course[2]);
-console.log(course[3]);
-console.log(course[4]);
-*/
-//execution content
-//1.memory phase - variable environment
-//2.code - thred of environment
+let transactions=[];
 
-/*
-createCourse('jfsd');
-console.log(m)
+let savedTransactions=localStorage.getItem('transactions');
 
-function createCourse(coursename){
-    console.log("creating" + coursename);
+if(savedTransactions){
+    transactions=JSON.parse(savedTransactions);
 }
 
-var m = 10;
-console.log(m)
-createCourse('pfsd');
+e.addEventListener("submit",addTransaction);
+function addTransaction(event){
+    event.preventDefault();
+    const name = f.value.trim();
+    const amount =Number(g.value);
+    const transactionCategory = i.value;
+    const transactionType = h.value;
 
-var a = 100;
-console.log(a);
-console.log(this.a)
-console.log()
-*/
-
-/*
-function hello(){
-    const x = 10;
-}
-console.log(x);
-hello();
-*/
-/*
- let a = function add(a,b){
-    return a+b
-}
-
-let b = function sub(a,b){
-    return a-b
-
-}
-
-function operate(operationFunc,a,b){
-    operateFunc(a,b)
-}
-
-
-console.log(a(2,3));
-console.log(b(2,3));
-
-*/
-
-/*
-
-let a = 10;
-function outer(){
-    a = 100;
-    function inner(){
-        console.log(a);
+    if(name==="" || amount<=0){
+        d.textContent="Please enter valid name and amount";
+        return;
     }
-    return inner;
+    const transaction={
+        id:Date.now(),
+        name: name,
+        amount:amount,
+        transactionType:transactionType,
+        transactionCategory:transactionCategory
+    
+};
+
+transactions.push(transaction);
+
+savedTransaction();
+
+renderTransactions();
+
+   e.reset();
+
+   d.textContent="Transaction added successfully";
+
 }
 
-let returnFunc = outer();
-a = 20;
-console.log(returnFunc);
-returnFunc();*/
+function renderTransactions( transactionArray = transactions){
 
-function fetchData(callback){
-    setTimeout(() => {
-        let data = 'fetch data';
-        callback(data,null)
-    } , 5000)
-}
+    j.innerHTML = "";
 
-function handeldata(data , error){
-    if(error){
-        console.error(error)
-    }else{
-        console.log(data)
+    transactionArray.forEach(function(transaction){
+        const sign = transaction.transactionType === "income" ? "+": "-";
+        const amountClass = transaction.TransactionType === "income"? "income-amount":"expense-amount";
+
+        j.innerHTML += `
+        <div class ="transaction">
+            <div class="transaction-info">
+            <h3>${transaction.name}</h3>
+            <p>${transaction.transactionCategory}</p>
+            </div>
+            <div class = "transaction-amount">
+            <span class="${amountClass}">
+            ${sign} ${transaction.amount}
+            </span>
+
+            </div>
+        </div>
+    `;
     }
+)
+calculateTotals();
+};
+ function calculateTotals(){
+    const income = transactions.filter(function(transaction){
+        return transaction.transactionType ==="income";})
+        .reduce(function(total, transaction){
+            return total+transaction.amount;
+
+},0);
+    const expense = transactions.filter(function(transaction){
+        return transaction.transactionType ==="expense";})
+        .reduce(function(total, transaction){
+            return total+transaction.amount;
+},0);
+const currentBalance = income - expense;
+
+a.textContent = income;
+b.textContent = expense;
+c.textContent = currentBalance;
 }
 
-fetchData(handeldata);
+function savedTransaction(){
+    localStorage.setItem("transaction",JSON.stringify(transactions));}
 
-
-
-
-
-
+renderTransactions();
